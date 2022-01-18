@@ -1,0 +1,87 @@
+%TASK 7!!!
+testing = readtable('data_test2.txt');
+training = readtable('data_train2.txt');
+
+x1 = training(:,6); %Acceleration
+y1 = training(:,1); %Miles per Gallon
+
+%Explanatory variable
+X1 = table2array(x1);
+%Dependent variable
+Y1 = table2array(y1);
+
+%Slide 1 of 6: Scatter plot
+figure
+scatter(X1,Y1)
+xlabel('x')
+ylabel('y')
+b1 = X1\Y1
+
+%Slide 2 of 6: Line A
+yHat1 = b1*X1;
+scatter(X1,Y1)
+% -- Plotting begins : Line A
+hold on
+plot(X1, yHat1)
+% -- Naming the X and Y axis
+xlabel('This one')
+ylabel('That one')
+title('Everyone')
+% -- Turning grid bground on
+grid on
+
+%Slide 3 of 6: Line B
+%"Improve the fit" with a second line.
+x1 = [ones(length(X1),1) X1];
+b = x1\Y1
+% -- Plotting begins : Line B
+yHat2 = x1*b;
+plot(X1,yHat2, '--')
+
+%Slide 4 of 6: Line 3/3
+%JUST DO TWO LINES? (A & B)
+%So.....NA
+%Slide 5 of 6: Look at two lines most similar?
+%Look at Slide 6 of 6 to find the difference. 
+
+%Slide 6 of 6: Now..which is best fitting?
+%look at residuals (Report Avg least SQ error).
+% -- compare Line A residuals with...
+Rsq1 = 1 - sum((Y1 - yHat1).^2)/sum((Y1 - mean(Y1)).^2)
+% -- compare Line B residuals with...
+Rsq2 = 1 - sum((Y1 - yHat2).^2)/sum((Y1 - mean(Y1)).^2)
+
+
+%Now BEST FITTING LINE IS FOUND. 
+%PREDICTION has been made.
+% -- LINE A = 0.1985 <--less is the better fitting
+% -- LINE B = 0.2126
+
+
+%TASK 8!!!! (Test against that mothereffing model)
+
+%Make a preditcion using the best fitting line
+
+% model = fitlm (x,y)
+
+%So, each model needs to be fitted. Make it model1 and model2 using fitlm.
+x2 = testing(:,6); %Acceleration
+y2 = testing(:,1); %Miles per Gallon
+
+%Explanatory variable
+X2 = table2array(x2);
+%Dependent variable
+Y2 = table2array(y2);
+
+
+
+%{
+model1 = fitlm(X2, Rsq1); %Acceleration
+model2 = fitlm(Y2, Rsq1); %Miles per Gallon
+
+%Then do this again
+% -- compare Line A residuals with...
+Rsq1 = 1 - sum((Y1 - yHat1).^2)/sum((Y1 - mean(Y1)).^2)
+% -- compare Line B residuals with...
+Rsq2 = 1 - sum((Y1 - yHat2).^2)/sum((Y1 - mean(Y1)).^2)
+%}
